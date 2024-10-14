@@ -5,32 +5,33 @@ library(tidyverse)
 countries <- vect("~/Dropbox/Documents/Datasets/GADM/gadm_410_level0/gadm_410_level0.shp")
 country_ids <- countries$GID_0
 
-## Load Ecosystem Services
-coastal_protection_reef <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_coastalprotection_barrierreef_WARPED_average_md5_52d37ea29c0f70a05941e86b1360993c.tif")
-coastal_protection <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_coastalprotection_norm_WARPED_average_md5_ca4d5414b3153d38bba26ad4d72f566b.tif")
-coastal_protection_offshore <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/for Rachel/realized_coastalprotection_norm_offshore_WARPED_average_md5_9bafbd5fc7f3b2edce8574dd6351a40d.tif")
-coastal_protection_onshore <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/for Rachel/realized_coastalprotection_norm_onshore_WARPED_average_MASKED_md5_017136b3dacc0650d1bcf28f1ac963a7.tif")
-commercial_timber <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_commercialtimber_forest_clamped0_WARPED_average_MASKED_md5_faee51c6e7650eadc182bb5a80cf34e2.tif")
-domestic_timber <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_domestictimber_forest_clamped0_WARPED_average_MASKED_md5_ea05ce3196f620c371207a229de750da.tif")
-flood_nathab <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_flood_nathab_clamped0_WARPED_average_MASKED_md5_4eee2a6e326fb5316058954bfc30a95b.tif")
-flood_mitigation_500km <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_floodmitigation_attn_500km_nathab_clamped_WARPED_average_MASKED_md5_a854f26f87f536a978b0652efe3c0377.tif")
-flood_mitigation_50km <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_floodmitigation_attn_50km_nathab_clamped_WARPED_average_MASKED_md5_68ead5d2492dad9e5dbc24f19e72824d.tif")
-fuelwood <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_fuelwood_forest_clamped0_WARPED_average_MASKED_md5_f392976e4bac7ebd0d0040823d61e324.tif")
-fwfish <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_fwfish_per_km2_clamped_1e-3_30_WARPED_average_MASKED_md5_9c4e67668d7798c3488365bcf3849266.tif")
-grazing <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_grazing_natnotforest_clamped0_WARPED_average_MASKED_md5_5e51614f1ae1a19359b95bb18dc9918e.tif")
-marinefish <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_marinefish_watson_2010_2014_clamped_0sfill_WARPED_average_MASKED_md5_92dd7f837547833339f320478ee3cee6.tif")
-moisture_recycling <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_moisturerecycling_nathab30s_WARPED_average_MASKED_md5_6572dd656465bdbf456953e50597a552.tif")
-nitrogen_retention_500km <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_nitrogenretention_attn_500km_WARPED_average_MASKED_md5_ca56502377df465a80295c60b819693c.tif")
-nitrogen_retention_50km <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_nitrogenretention_attn_50km_WARPED_average_MASKED_md5_82ef7456e2f9085dcdf1ec1ad35c1be8.tif")
-rural_nature_access_360 <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_norm_nature_access_lspop_2017_URCA_rural_360_WARPED_average_MASKED_md5_d3bb4e547d345f2adc589dadb8860060.tif")
-rural_nature_access_60 <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_norm_nature_access_lspop_2017_URCA_rural_60_WARPED_average_MASKED_md5_0883b8119cfa48637a320a7bdfc4ef9d.tif")
-urban_nature_access_360 <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_norm_nature_access_lspop_2017_URCA_urban_360_WARPED_average_MASKED_md5_7e0adb5b47905ffc90a024bb3f4d01f9.tif")
-urban_nature_access_60 <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_norm_nature_access_lspop_2017_URCA_urban_60_WARPED_average_MASKED_md5_df1be9127612ff3c19817ef0c235c03e.tif")
-pollination <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_pollination_norm_nathab_clamped_WARPED_average_MASKED_md5_0b1c860775d3e917459b53aeda637a62 (1).tif")
-reef_tourism <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_reeftourism_Modelled_Total_Dollar_Value_WARPED_average_md5_018fbdb4eb42da67316ea618356cb3da.tif")
-sediment_deposition_500km <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_sedimentdeposition_attn_500km_WARPED_average_MASKED_md5_4976bc9d25d324871f47c2f53e578af7.tif")
-sediment_deposition_50km <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/realized_sedimentdeposition_attn_50km_WARPED_average_MASKED_md5_c369f7b7b8d086c616f14d5c7acc5fc3.tif")
-vulnerable_carbon <- rast("~/Dropbox/Documents/Datasets/NCP_resampled/reprojected_resampled_Eckert2km/Vulnerable_C_Total_2018_WARPED_average_MASKED_md5_3233d4cc77cd819670e69881b5db50d4.tif")
+## Load Ecosystem Services 2km
+setwd("C:/users/rneugarten/OneDrive - Wildlife Conservation Society/_WCS/GIS_WCS/EcosystemServices_ChaplinKramer/reprojected_resampled_Eckert2km")
+coastal_protection_reef <- rast("realized_coastalprotection_barrierreef.tif")
+coastal_protection <- rast("realized_coastalprotection_norm.tif")
+coastal_protection_offshore <- rast("realized_coastalprotection_norm_offshore.tif")
+coastal_protection_onshore <- rast("realized_coastalprotection_norm_onshore.tif")
+commercial_timber <- rast("realized_commercialtimber_forest.tif")
+domestic_timber <- rast("realized_domestictimber_forest.tif")
+flood_mitigation_500km <- rast("realized_floodmitigation_attn_500km_nathab.tif")
+flood_mitigation_50km <- rast("realized_floodmitigation_attn_50km.tif")
+fuelwood <- rast("realized_fuelwood_forest.tif")
+fwfish <- rast("realized_fwfish_per_km2.tif")
+grazing <- rast("realized_grazing_natnotforest.tif")
+marinefish <- rast("realized_marinefish_watson_2010_2014.tif")
+moisture_recycling <- rast("realized_moisturerecycling_nathab30s.tif")
+nitrogen_retention_500km <- rast("realized_nitrogenretention_attn_500km.tif")
+nitrogen_retention_50km <- rast("realized_nitrogenretention_attn_50km.tif")
+nature_access_rural_6hr <- rast("realized_nature_access_rural_6h.tif")
+nature_access_rural_1hr <- rast("realized_nature_access_rural_1h.tif")
+nature_access_urban_6hr <- rast("realized_nature_access_urban_6h.tif")
+nature_access_urban_1hr <- rast("realized_nature_access_urban_1h.tif")
+pollination <- rast("realized_pollination_norm_nathab.tif")
+reef_tourism <- rast("realized_reeftourism_Modelled_Total_Dollar_Value.tif")
+sediment_deposition_500km <- rast("realized_sedimentdeposition_attn_500km.tif")
+sediment_deposition_50km <- rast("realized_sedimentdeposition_attn_50km.tif")
+vulnerable_carbon <- rast("Vulnerable_C_Total_2018.tif")
+setwd("C:/Users/rneugarten/Documents/Github/kbas_es")
 
 ## Project countries
 countries <- project(countries, coastal_protection_reef)
@@ -52,10 +53,10 @@ marinefish_sum <- rep(NA, nrow(countries))
 moisture_recycling_sum <- rep(NA, nrow(countries))
 nitrogen_retention_500km_sum <- rep(NA, nrow(countries))
 nitrogen_retention_50km_sum <- rep(NA, nrow(countries))
-rural_nature_access_360_sum <- rep(NA, nrow(countries))
-rural_nature_access_60_sum <- rep(NA, nrow(countries))
+nature_access_rural_6hr_sum <- rep(NA, nrow(countries))
+nature_access_rural_1hr_sum <- rep(NA, nrow(countries))
 urban_nature_access_360_sum <- rep(NA, nrow(countries))
-urban_nature_access_60_sum <- rep(NA, nrow(countries))
+nature_access_urban_1hr_sum <- rep(NA, nrow(countries))
 pollination_sum <- rep(NA, nrow(countries))
 reef_tourism_sum <- rep(NA, nrow(countries))
 sediment_deposition_500km_sum <- rep(NA, nrow(countries))
@@ -86,10 +87,10 @@ for(i in 1:nrow(countries)) {
   moisture_recycling_i <- crop(moisture_recycling, country_i, touches = F, mask = T)
   nitrogen_retention_500km_i <- crop(nitrogen_retention_500km, country_i, touches = F, mask = T)
   nitrogen_retention_50km_i <- crop(nitrogen_retention_50km, country_i, touches = F, mask = T)
-  rural_nature_access_360_i <- crop(rural_nature_access_360, country_i, touches = F, mask = T)
-  rural_nature_access_60_i <- crop(rural_nature_access_60, country_i, touches = F, mask = T)
+  nature_access_rural_6hr_i <- crop(nature_access_rural_6hr, country_i, touches = F, mask = T)
+  nature_access_rural_1hr_i <- crop(nature_access_rural_1hr, country_i, touches = F, mask = T)
   urban_nature_access_360_i <- crop(urban_nature_access_360, country_i, touches = F, mask = T)
-  urban_nature_access_60_i <- crop(urban_nature_access_60, country_i, touches = F, mask = T)
+  nature_access_urban_1hr_i <- crop(nature_access_urban_1hr, country_i, touches = F, mask = T)
   pollination_i <- crop(pollination, country_i, touches = F, mask = T)
   reef_tourism_i <- crop(reef_tourism, country_i, touches = F, mask = T)
   sediment_deposition_500km_i <- crop(sediment_deposition_500km, country_i, touches = F, mask = T)
@@ -113,10 +114,10 @@ for(i in 1:nrow(countries)) {
   moisture_recycling_sum[i] <- global(moisture_recycling_i, fun = "sum", na.rm = T)[[1]]
   nitrogen_retention_500km_sum[i] <- global(nitrogen_retention_500km_i, fun = "sum", na.rm = T)[[1]]
   nitrogen_retention_50km_sum[i] <- global(nitrogen_retention_50km_i, fun = "sum", na.rm = T)[[1]]
-  rural_nature_access_360_sum[i] <- global(rural_nature_access_360_i, fun = "sum", na.rm = T)[[1]]
-  rural_nature_access_60_sum[i] <- global(rural_nature_access_60_i, fun = "sum", na.rm = T)[[1]]
+  nature_access_rural_6hr_sum[i] <- global(nature_access_rural_6hr_i, fun = "sum", na.rm = T)[[1]]
+  nature_access_rural_1hr_sum[i] <- global(nature_access_rural_1hr_i, fun = "sum", na.rm = T)[[1]]
   urban_nature_access_360_sum[i] <- global(urban_nature_access_360_i, fun = "sum", na.rm = T)[[1]]
-  urban_nature_access_60_sum[i] <- global(urban_nature_access_60_i, fun = "sum", na.rm = T)[[1]]
+  nature_access_urban_1hr_sum[i] <- global(nature_access_urban_1hr_i, fun = "sum", na.rm = T)[[1]]
   pollination_sum[i] <- global(pollination_i, fun = "sum", na.rm = T)[[1]]
   reef_tourism_sum[i] <- global(reef_tourism_i, fun = "sum", na.rm = T)[[1]]
   sediment_deposition_500km_sum[i] <- global(sediment_deposition_500km_i, fun = "sum", na.rm = T)[[1]]
@@ -147,10 +148,10 @@ country_df <- data.frame(country = countries$COUNTRY,
                          moisture_recycling = moisture_recycling_sum,
                          nitrogen_retention_500km = nitrogen_retention_500km_sum,
                          nitrogen_retention_50km = nitrogen_retention_50km_sum,
-                         rural_nature_access_360 = rural_nature_access_360_sum,
-                         rural_nature_access_60 = rural_nature_access_60_sum,
+                         nature_access_rural_6hr = nature_access_rural_6hr_sum,
+                         nature_access_rural_1hr = nature_access_rural_1hr_sum,
                          urban_nature_access_360 = urban_nature_access_360_sum,
-                         urban_nature_access_60 = urban_nature_access_60_sum,
+                         nature_access_urban_1hr = nature_access_urban_1hr_sum,
                          pollination = pollination_sum,
                          reef_tourism = reef_tourism_sum,
                          sediment_deposition_500km = sediment_deposition_500km_sum,

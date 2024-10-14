@@ -3,10 +3,10 @@
 
 library(terra)
 library(tidyverse)
-library(here)
 
 getwd() #"C:/Users/rneugarten/Documents/Github/kbas_es"
 
+# Load datasets ------------------
 
 ## Load KBAs
 kbas <- vect("data/KBAsGlobal_2023_September_02_POL.shp")
@@ -40,6 +40,8 @@ sediment_deposition_50km <- rast("realized_sedimentdeposition_attn_50km.tif")
 vulnerable_carbon <- rast("Vulnerable_C_Total_2018.tif")
 setwd("C:/Users/rneugarten/Documents/Github/kbas_es")
 
+# Data setup --------------------------------
+
 ## Project KBAs
 kbas <- project(kbas, coastal_protection_reef)
 
@@ -69,7 +71,7 @@ sediment_deposition_500km_sum <- rep(NA, nrow(kbas))
 sediment_deposition_50km_sum <- rep(NA, nrow(kbas))
 vulnerable_carbon_sum <- rep(NA, nrow(kbas))
 
-## Loop through kbas
+## Crop ES rasters to KBAs, loop through KBAs ------------------
 for(i in 1:nrow(kbas)) { 
   
   ## Get kba i
@@ -102,7 +104,7 @@ for(i in 1:nrow(kbas)) {
   sediment_deposition_50km_i <- crop(sediment_deposition_50km, kba_i, touches = F, mask = T)
   vulnerable_carbon_i <- crop(vulnerable_carbon, kba_i, touches = F, mask = T)
   
-  ## Get ES value sums
+  ## Calculate ES value sums in each KBA -------------------------
   coastal_protection_reef_sum[i] <- global(coastal_protection_reef_i, fun = "sum", na.rm = T)[[1]]
   coastal_protection_sum[i] <- global(coastal_protection_i, fun = "sum", na.rm = T)[[1]]
   coastal_protection_offshore_sum[i] <- global(coastal_protection_offshore_i, fun = "sum", na.rm = T)[[1]]
@@ -133,7 +135,7 @@ for(i in 1:nrow(kbas)) {
   
 }
 
-## Setup KBA output file
+## Setup KBA ES sum output file ----------------------------
 kba_df <- data.frame(kba = kbas$SitRecID,
                      coastal_protection_reef = coastal_protection_reef_sum,
                      coastal_protection = coastal_protection_sum,
@@ -167,3 +169,16 @@ kba_df <- kba_df %>%
 ## Export
 setwd("C:/Users/rneugarten/Documents/Github/kbas_es")
 write.csv(kba_df, paste0("outputs/kba_ES_data_14Oct2024.csv"))
+
+# Calculate percent of global ES in KBAs ----------------------
+
+# Calculate sum of ES contained in all KBAs
+kba_es_total_df <- kba_df %>%
+  pivot_longer(cols = 2:25, names_to = "es", values_to = "value") %>%
+  group_by(es) %>%
+  summarize(total_kba = sum(value, na.rm = TRUE))
+
+#load output from other script global_ES_sums.R
+es_global_sum_df <- read_csv("outputs/ES_global_sums_14Oct2024.csv")
+
+kba_es_total_global_df <- cbind(kba_es_total_df, es_global_sum_df) # FIX columns don't match
