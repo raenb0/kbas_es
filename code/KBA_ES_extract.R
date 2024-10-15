@@ -181,4 +181,7 @@ kba_es_total_df <- kba_df %>%
 #load output from other script global_ES_sums.R
 es_global_sum_df <- read_csv("outputs/ES_global_sums_14Oct2024.csv")
 
-kba_es_total_global_df <- cbind(kba_es_total_df, es_global_sum_df) # FIX columns don't match
+kba_es_total_global_df <- cbind(kba_es_total_df, es_global_sum_df) # FIX columns don't match***
+
+kba_es_total_global_df <- kba_es_total_global_df %>%
+  mutate(pct_kba = total_kba/sum)
