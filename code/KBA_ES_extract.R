@@ -3,6 +3,7 @@
 
 library(terra)
 library(tidyverse)
+library(sf)
 
 getwd() #"C:/Users/rneugarten/Documents/Github/kbas_es"
 
@@ -261,4 +262,23 @@ es_kba_global_join <- es_kba_global_join %>%
 #export KBA and global ES totals and percentages
 write.csv(es_kba_global_join, paste0("outputs/es_kba_global_join_30Dec2024.csv"))
 
+# Calculate global area of KBAs with help from chatGPT------------------------
+library(sf)
 
+#load data in format sf can read it
+kbas <- st_read("data/KBAsGlobal_2023_September_02_POL.shp")
+
+# Transform to a globally applicable equal-area projection (EPSG: 6933 - World Mollweide Equal Area)
+kbas <- st_transform(kbas, crs = 6933)
+
+# Calculate the area in square meters
+kbas$area_sqm <- st_area(kbas)
+
+# convert to square kilometers
+kbas$area_sqkm <- kbas$area_sqm / 1e6
+
+# sum of the "area_sqkm" column
+kba_total_area_sqkm <- sum(kbas$area_sqkm, na.rm = TRUE)
+kba_total_area_sqkm  #39,181,668 sq km **NOTE KBA database says 22,229,814 sq km
+#global land area (according to google) 149 million sq km
+#minus Antarctica 135 million sq km
