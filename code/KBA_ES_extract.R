@@ -178,10 +178,87 @@ kba_es_total_df <- kba_df %>%
   group_by(es) %>%
   summarize(total_kba = sum(value, na.rm = TRUE))
 
+## Export sum of ES contained in all KBAs
+setwd("C:/Users/rneugarten/Documents/Github/kbas_es")
+write.csv(kba_es_total_df, paste0("outputs/kba_es_total_14Oct2024.csv"))
+
 #load output from other script global_ES_sums.R
 es_global_sum_df <- read_csv("outputs/ES_global_sums_14Oct2024.csv")
 
-kba_es_total_global_df <- cbind(kba_es_total_df, es_global_sum_df) # FIX columns don't match***
+#rename rows to match KBA ES outputs with help from chatGPT
+original_names <- c(
+  "realized_coastalprotection_barrierreef",
+  "realized_coastalprotection_norm",
+  "realized_coastalprotection_norm_offshore",
+  "realized_coastalprotection_norm_onshore",
+  "realized_commercialtimber_forest",
+  "realized_domestictimber_forest",
+  "realized_floodmitigation_attn_500km_nathab",
+  "realized_floodmitigation_attn_50km",
+  "realized_fuelwood_forest",
+  "realized_fwfish_per_km2",
+  "realized_grazing_natnotforest",
+  "realized_marinefish_watson_2010_2014",
+  "realized_moisturerecycling_nathab30s",
+  "realized_nitrogenretention_attn_500km",
+  "realized_nitrogenretention_attn_50km",
+  "realized_nature_access_rural_6h",
+  "realized_nature_access_rural_1h",
+  "realized_nature_access_urban_6h",
+  "realized_nature_access_urban_1h",
+  "realized_pollination_norm_nathab",
+  "realized_reeftourism_Modelled_Total_Dollar_Value",
+  "realized_sedimentdeposition_attn_500km",
+  "realized_sedimentdeposition_attn_50km",
+  "Vulnerable_C_Total_2018"
+)
 
-kba_es_total_global_df <- kba_es_total_global_df %>%
-  mutate(pct_kba = total_kba/sum)
+# New row names (provided in the second image)
+new_names <- c(
+  "coastal_protection_reef",
+  "coastal_protection",
+  "coastal_protection_offshore",
+  "coastal_protection_onshore",
+  "commercial_timber",
+  "domestic_timber",
+  "flood_mitigation_500km",
+  "flood_mitigation_50km",
+  "fuelwood",
+  "fwfish",
+  "grazing",
+  "marinefish",
+  "moisture_recycling",
+  "nitrogen_retention_500km",
+  "nitrogen_retention_50km",
+  "nature_access_rural_6hr",
+  "nature_access_rural_1hr",
+  "nature_access_urban_6hr",
+  "nature_access_urban_1hr",
+  "pollination",
+  "reef_tourism",
+  "sediment_deposition_500km",
+  "sediment_deposition_50km",
+  "vulnerable_carbon"
+)
+
+# Replace column in the data frame
+column_to_update <- "...1"
+es_global_sum_df[[column_to_update]] <- new_names[match(es_global_sum_df[[column_to_update]], original_names)]
+#rename column
+colnames(es_global_sum_df)[colnames(es_global_sum_df) == "...1"] <- "es"
+colnames(es_global_sum_df)[colnames(es_global_sum_df) == "sum"] <- "total_global"
+
+#export updated global ES dataframe
+write.csv(es_global_sum_df, paste0("outputs/es_global_sum_30Dec2024.csv"))
+
+#left join the KBA total with the global total dataframes
+library(dplyr)
+es_kba_global_join <- left_join(kba_es_total_df, es_global_sum_df, by = "es")
+
+es_kba_global_join <- es_kba_global_join %>%
+  mutate(pct_kba = total_kba/total_global)
+
+#export KBA and global ES totals and percentages
+write.csv(es_kba_global_join, paste0("outputs/es_kba_global_join_30Dec2024.csv"))
+
+
