@@ -72,8 +72,6 @@ sediment_deposition_500km_sum <- rep(NA, nrow(kbas))
 sediment_deposition_50km_sum <- rep(NA, nrow(kbas))
 vulnerable_carbon_sum <- rep(NA, nrow(kbas))
 
-# repeat for mean values
-
 ## Setup data storage variables (mean)
 coastal_protection_reef_mean <- rep(NA, nrow(kbas))
 coastal_protection_mean <- rep(NA, nrow(kbas))
@@ -101,6 +99,8 @@ sediment_deposition_50km_mean <- rep(NA, nrow(kbas))
 vulnerable_carbon_mean <- rep(NA, nrow(kbas))
 
 ## Crop ES rasters to KBAs, loop through KBAs ------------------
+#NOTE takes several hours to run
+
 tic()
 for(i in 1:nrow(kbas)) { 
   
@@ -134,33 +134,33 @@ for(i in 1:nrow(kbas)) {
   sediment_deposition_50km_i <- crop(sediment_deposition_50km, kba_i, touches = F, mask = T)
   vulnerable_carbon_i <- crop(vulnerable_carbon, kba_i, touches = F, mask = T)
   
-  # ## Calculate ES value sums in each KBA -------------------------
-  # coastal_protection_reef_sum[i] <- global(coastal_protection_reef_i, fun = "sum", na.rm = T)[[1]]
-  # coastal_protection_sum[i] <- global(coastal_protection_i, fun = "sum", na.rm = T)[[1]]
-  # coastal_protection_offshore_sum[i] <- global(coastal_protection_offshore_i, fun = "sum", na.rm = T)[[1]]
-  # coastal_protection_onshore_sum[i] <- global(coastal_protection_onshore_i, fun = "sum", na.rm = T)[[1]]
-  # commercial_timber_sum[i] <- global(commercial_timber_i, fun = "sum", na.rm = T)[[1]]
-  # domestic_timber_sum[i] <- global(domestic_timber_i, fun = "sum", na.rm = T)[[1]]
-  # flood_mitigation_500km_sum[i] <- global(flood_mitigation_500km_i, fun = "sum", na.rm = T)[[1]]
-  # flood_mitigation_50km_sum[i] <- global(flood_mitigation_50km_i, fun = "sum", na.rm = T)[[1]]
-  # fuelwood_sum[i] <- global(fuelwood_i, fun = "sum", na.rm = T)[[1]]
-  # fwfish_sum[i] <- global(fwfish_i, fun = "sum", na.rm = T)[[1]]
-  # grazing_sum[i] <- global(grazing_i, fun = "sum", na.rm = T)[[1]]
-  # marinefish_sum[i] <- global(marinefish_i, fun = "sum", na.rm = T)[[1]]
-  # moisture_recycling_sum[i] <- global(moisture_recycling_i, fun = "sum", na.rm = T)[[1]]
-  # nitrogen_retention_500km_sum[i] <- global(nitrogen_retention_500km_i, fun = "sum", na.rm = T)[[1]]
-  # nitrogen_retention_50km_sum[i] <- global(nitrogen_retention_50km_i, fun = "sum", na.rm = T)[[1]]
-  # nature_access_rural_6hr_sum[i] <- global(nature_access_rural_6hr_i, fun = "sum", na.rm = T)[[1]]
-  # nature_access_rural_1hr_sum[i] <- global(nature_access_rural_1hr_i, fun = "sum", na.rm = T)[[1]]
-  # nature_access_urban_6hr_sum[i] <- global(nature_access_urban_6hr_i, fun = "sum", na.rm = T)[[1]]
-  # nature_access_urban_1hr_sum[i] <- global(nature_access_urban_1hr_i, fun = "sum", na.rm = T)[[1]]
-  # pollination_sum[i] <- global(pollination_i, fun = "sum", na.rm = T)[[1]]
-  # reef_tourism_sum[i] <- global(reef_tourism_i, fun = "sum", na.rm = T)[[1]]
-  # sediment_deposition_500km_sum[i] <- global(sediment_deposition_500km_i, fun = "sum", na.rm = T)[[1]]
-  # sediment_deposition_50km_sum[i] <- global(sediment_deposition_50km_i, fun = "sum", na.rm = T)[[1]]
-  # vulnerable_carbon_sum[i] <- global(vulnerable_carbon_i, fun = "sum", na.rm = T)[[1]]
+  # Calculate ES value (sums) in each KBA
+  coastal_protection_reef_sum[i] <- global(coastal_protection_reef_i, fun = "sum", na.rm = T)[[1]]
+  coastal_protection_sum[i] <- global(coastal_protection_i, fun = "sum", na.rm = T)[[1]]
+  coastal_protection_offshore_sum[i] <- global(coastal_protection_offshore_i, fun = "sum", na.rm = T)[[1]]
+  coastal_protection_onshore_sum[i] <- global(coastal_protection_onshore_i, fun = "sum", na.rm = T)[[1]]
+  commercial_timber_sum[i] <- global(commercial_timber_i, fun = "sum", na.rm = T)[[1]]
+  domestic_timber_sum[i] <- global(domestic_timber_i, fun = "sum", na.rm = T)[[1]]
+  flood_mitigation_500km_sum[i] <- global(flood_mitigation_500km_i, fun = "sum", na.rm = T)[[1]]
+  flood_mitigation_50km_sum[i] <- global(flood_mitigation_50km_i, fun = "sum", na.rm = T)[[1]]
+  fuelwood_sum[i] <- global(fuelwood_i, fun = "sum", na.rm = T)[[1]]
+  fwfish_sum[i] <- global(fwfish_i, fun = "sum", na.rm = T)[[1]]
+  grazing_sum[i] <- global(grazing_i, fun = "sum", na.rm = T)[[1]]
+  marinefish_sum[i] <- global(marinefish_i, fun = "sum", na.rm = T)[[1]]
+  moisture_recycling_sum[i] <- global(moisture_recycling_i, fun = "sum", na.rm = T)[[1]]
+  nitrogen_retention_500km_sum[i] <- global(nitrogen_retention_500km_i, fun = "sum", na.rm = T)[[1]]
+  nitrogen_retention_50km_sum[i] <- global(nitrogen_retention_50km_i, fun = "sum", na.rm = T)[[1]]
+  nature_access_rural_6hr_sum[i] <- global(nature_access_rural_6hr_i, fun = "sum", na.rm = T)[[1]]
+  nature_access_rural_1hr_sum[i] <- global(nature_access_rural_1hr_i, fun = "sum", na.rm = T)[[1]]
+  nature_access_urban_6hr_sum[i] <- global(nature_access_urban_6hr_i, fun = "sum", na.rm = T)[[1]]
+  nature_access_urban_1hr_sum[i] <- global(nature_access_urban_1hr_i, fun = "sum", na.rm = T)[[1]]
+  pollination_sum[i] <- global(pollination_i, fun = "sum", na.rm = T)[[1]]
+  reef_tourism_sum[i] <- global(reef_tourism_i, fun = "sum", na.rm = T)[[1]]
+  sediment_deposition_500km_sum[i] <- global(sediment_deposition_500km_i, fun = "sum", na.rm = T)[[1]]
+  sediment_deposition_50km_sum[i] <- global(sediment_deposition_50km_i, fun = "sum", na.rm = T)[[1]]
+  vulnerable_carbon_sum[i] <- global(vulnerable_carbon_i, fun = "sum", na.rm = T)[[1]]
   
-## repeat for means: Calculate ES value means in each KBA -------------------------
+# repeat for means: Calculate ES value (means) in each KBA
 coastal_protection_reef_mean[i] <- global(coastal_protection_reef_i, fun = "mean", na.rm = T)[[1]]
 coastal_protection_mean[i] <- global(coastal_protection_i, fun = "mean", na.rm = T)[[1]]
 coastal_protection_offshore_mean[i] <- global(coastal_protection_offshore_i, fun = "mean", na.rm = T)[[1]]
@@ -190,7 +190,7 @@ vulnerable_carbon_mean[i] <- global(vulnerable_carbon_i, fun = "mean", na.rm = T
 print(paste0(kba_i$SitRecID, " - ", i, " of ", nrow(kbas), " completed"))
 
 }
-(toc)
+toc() #takes several hours
 
 
 ## Setup KBA ES sum output file ----------------------------
@@ -247,15 +247,15 @@ kba_df_mean <- data.frame(kba = kbas$SitRecID,
                      sediment_deposition_50km = sediment_deposition_50km_mean,
                      vulnerable_carbon = vulnerable_carbon_mean)
 
-## Convert all NaNs to 0
+## Convert all NaNs to 0 in sum df
 kba_df <- kba_df %>% 
   mutate(across(everything(), ~replace(.x, is.nan(.x), 0)))
 
-## repeat for mean df
+## repeat for mean df: Convert all NaNs to 0
 kba_df_mean <- kba_df_mean %>% 
   mutate(across(everything(), ~replace(.x, is.nan(.x), 0)))
 
-## Export
+## Export outputs
 setwd("C:/Users/rneugarten/Documents/Github/kbas_es")
 write.csv(kba_df, paste0("outputs/kba_ES_sums_1Jan2025.csv"))
 write.csv(kba_df_mean, paste0("outputs/kba_ES_means_1Jan2025.csv"))
@@ -282,7 +282,8 @@ write.csv(kba_es_total_df, paste0("outputs/kba_es_total_sum_1Jan2025.csv"))
 setwd("C:/Users/rneugarten/Documents/Github/kbas_es")
 write.csv(kba_es_total_mean_df, paste0("outputs/kba_es_total_mean_1Jan2025.csv"))
 
-#load output from other script if needed: global_ES_sums.R
+#load outputs from other script if needed: global_ES_sums.R 
+# **NOTE global totals include KBAs so not an inside/outside comparison
 es_global_sum_df <- read_csv("outputs/ES_global_sums_14Oct2024.csv")
 es_global_mean_df <- read_csv("outputs/ES_global_means_1Jan2025.csv")
 
@@ -314,7 +315,7 @@ original_names <- c(
   "Vulnerable_C_Total_2018"
 )
 
-# New row names (provided in the second image)
+# New row names
 new_names <- c(
   "coastal_protection_reef",
   "coastal_protection",
@@ -345,19 +346,20 @@ new_names <- c(
 # Replace column in the data frame
 column_to_update <- "...1"
 es_global_sum_df[[column_to_update]] <- new_names[match(es_global_sum_df[[column_to_update]], original_names)]
+
 #rename column
 colnames(es_global_sum_df)[colnames(es_global_sum_df) == "...1"] <- "es"
 colnames(es_global_sum_df)[colnames(es_global_sum_df) == "sum"] <- "total_global"
 
-#repeat for means
-# Replace column in the data frame
+#repeat for mean df: Replace column
 column_to_update <- "...1"
 es_global_mean_df[[column_to_update]] <- new_names[match(es_global_mean_df[[column_to_update]], original_names)]
+
 #rename column
 colnames(es_global_mean_df)[colnames(es_global_mean_df) == "...1"] <- "es"
 colnames(es_global_mean_df)[colnames(es_global_mean_df) == "sum"] <- "total_global"
 
-#export updated global ES dataframe
+#export updated global ES dataframes
 write.csv(es_global_sum_df, paste0("outputs/es_global_sum_30Dec2024.csv"))
 write.csv(es_global_mean_df, paste0("outputs/es_global_mean_1Jan2025.csv"))
 
@@ -365,6 +367,7 @@ write.csv(es_global_mean_df, paste0("outputs/es_global_mean_1Jan2025.csv"))
 library(dplyr)
 es_kba_global_join <- left_join(kba_es_total_df, es_global_sum_df, by = "es")
 
+#calculate percent of global ES contained in KBAs
 es_kba_global_join <- es_kba_global_join %>%
   mutate(pct_kba = total_kba/total_global)
 
@@ -372,14 +375,16 @@ es_kba_global_join <- es_kba_global_join %>%
 write.csv(es_kba_global_join, paste0("outputs/es_kba_global_join_30Dec2024.csv"))
 
 #repeat for means
-#left join the KBA total with the global total dataframes
+#left join the KBA total mean df with the global total mean df
 library(dplyr)
 es_kba_global_mean_join <- left_join(kba_es_total_mean_df, es_global_mean_df, by = "es")
 
+#caculate the percent of global ES (mean) value contained in KBAs (for comparison only)
 es_kba_global_mean_join <- es_kba_global_mean_join %>%
   mutate(pct_kba = global_mean_kba/mean)
 
 #export KBA and global ES totals and percentages
+# **NOTE global totals include KBAs so not an inside/outside comparison
 write.csv(es_kba_global_join, paste0("outputs/es_kba_global_join_30Dec2024.csv"))
 write.csv(es_kba_global_mean_join, paste0("outputs/es_kba_global_mean_join_1Jan2025.csv"))
 
