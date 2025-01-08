@@ -1,0 +1,19 @@
+### Load needed packages
+library(terra)
+library(sf)
+
+### Import data
+kba<-vect("D:/Google Drive/Shared drives/Conservation Planning Team/Data/KBAsGlobal_2023_September_02/KBAsGlobal_2023_September_02_POL.shp")
+template<-rast("D:/Google Drive/Shared drives/Conservation Planning Team/Data/NCP_priorities/NCP_individual/NCP_2km/realized_nature_access_urban_6h.tif")
+
+### Reproject template raster
+template_reproject<-project(template,kba)
+
+### Rasterize kbas
+kba_raster<-rasterize(kba,template_reproject,background=0)
+
+### Reproject rasterized version back to Eckert
+kba_raster_reproject<-project(kba_raster,template)
+
+### Write out file
+writeRaster(kba_raster_reproject,"D:/Google Drive/Shared drives/Conservation Planning Team/Data/KBAsGlobal_2023_September_02/rasterized_eckert.tif")
